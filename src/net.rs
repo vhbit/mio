@@ -1,3 +1,5 @@
+//! Networking primitives
+//!
 use std::fmt;
 use std::from_str::FromStr;
 use io::{IoHandle};
@@ -57,6 +59,8 @@ impl fmt::Show for SockAddr {
     }
 }
 
+/// TCP networking primitives
+///
 pub mod tcp {
     use os;
     use error::MioResult;
@@ -158,6 +162,7 @@ pub mod tcp {
     }
 }
 
+/// Named pipes
 pub mod pipe {
     use os;
     use io::{IoHandle};

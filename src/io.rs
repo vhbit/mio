@@ -2,6 +2,7 @@ use buf::{Buf, MutBuf};
 use os;
 use error::MioResult;
 
+/// The result of a non-blocking operation.
 #[deriving(Show)]
 pub enum NonBlock<T> {
     Ready(T),
