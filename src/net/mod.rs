@@ -76,6 +76,12 @@ pub trait Socket : AsRawFd {
         nix::setsockopt(self.as_raw_fd(), nix::SockLevel::Socket, nix::sockopt::SendTimeout, &t)
             .map_err(io::from_nix_error)
     }
+
+    /// Sets the value for the `SO_OOBINLINE` socket option
+    fn set_oob_inline(&self, val: bool) -> io::Result<()> {
+        nix::setsockopt(self.as_raw_fd(), nix::SockLevel::Socket, nix::sockopt::OobInline, val)
+            .map_err(io::from_nix_error)
+    }
 }
 
 impl<S: Socket> Socket for NonBlock<S> {

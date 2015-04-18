@@ -53,8 +53,9 @@ pub struct TcpSocket {
 
 impl TcpSocket {
     fn new(family: nix::AddressFamily, nonblock: bool) -> io::Result<TcpSocket> {
-        net::socket(family, nix::SockType::Stream, nonblock)
-            .map(FromFd::from_fd)
+        let result: TcpSocket = try!(net::socket(family, nix::SockType::Stream, nonblock)
+                                     .map(FromFd::from_fd));
+        result.set_oob_inline(true).map(|_| result)
     }
 
     pub fn connect(self, addr: &SocketAddr) -> io::Result<(TcpStream, bool)> {

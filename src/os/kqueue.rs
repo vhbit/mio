@@ -148,6 +148,10 @@ impl Events {
             if !ev.fflags.is_empty() {
                 kind = kind | Interest::error();
             }
+
+            if ev.flags.contains(EV_OOBAND) {
+                kind = kind | Interest::oob();
+            }
         }
 
         IoEvent::new(kind, token)

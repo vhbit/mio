@@ -166,6 +166,11 @@ impl Interest {
     }
 
     #[inline]
+    pub fn oob() -> Interest {
+        Interest(0x020)
+    }
+
+    #[inline]
     pub fn all() -> Interest {
         Interest::readable() |
             Interest::writable() |
@@ -196,6 +201,11 @@ impl Interest {
     #[inline]
     pub fn is_hinted(&self) -> bool {
         self.contains(Interest::hinted())
+    }
+
+    #[inline]
+    pub fn is_oob(&self) -> bool {
+        self.contains(Interest::oob())
     }
 
     #[inline]
@@ -317,6 +327,11 @@ impl ReadHint {
     }
 
     #[inline]
+    pub fn oob() -> ReadHint {
+        ReadHint(0x008)
+    }
+
+    #[inline]
     pub fn is_data(&self) -> bool {
         self.contains(ReadHint::data())
     }
@@ -329,6 +344,11 @@ impl ReadHint {
     #[inline]
     pub fn is_error(&self) -> bool {
         self.contains(ReadHint::error())
+    }
+
+    #[inline]
+    pub fn is_oob(&self) -> bool {
+        self.contains(ReadHint::oob())
     }
 
     #[inline]
@@ -468,6 +488,10 @@ impl IoEvent {
             hint = hint | ReadHint::error();
         }
 
+        if self.kind.is_oob() {
+            hint = hint | ReadHint::oob();
+        }
+
         hint
     }
 
@@ -484,5 +508,11 @@ impl IoEvent {
     /// This event indicated that the  handle had an error
     pub fn is_error(&self) -> bool {
         self.kind.is_error()
+    }
+
+    /// This event indicated that handle received data out of band
+    #[allow(dead_code)]
+    pub fn is_oob(&self) -> bool {
+        self.kind.is_oob()
     }
 }
